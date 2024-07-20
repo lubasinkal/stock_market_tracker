@@ -9,7 +9,12 @@ def index():
     if request.method == 'POST':
         ticker = request.form['ticker']
         stock = yf.Ticker(ticker)
-        data = stock.history(period="1mo")  # Fetch 1 month of data
+        start_date = request.form.get('start_date')
+        end_date = request.form.get('end_date')
+        if ticker and start_date and end_date:
+            stock_data = yf.download(ticker, start=start_date, end=end_date)
+            data = stock_data.reset_index()
+
     return render_template('index.html', data=data)
 
 if __name__ == '__main__':

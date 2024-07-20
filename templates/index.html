@@ -10,9 +10,18 @@
     <div class="container">
         <h1>Stock Tracker</h1>
         <form method="POST">
-            <input type="text" name="ticker" placeholder="Enter stock ticker" required>
+            <label for="ticker">Stock Ticker:</label>
+            <input type="text" id="ticker" name="ticker" placeholder="Enter stock ticker" required>
+            
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required>
+            
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" required>
+            
             <button type="submit">Get Data</button>
         </form>
+        
         {% if data is not none %}
         <h2>Historical Data for {{ request.form['ticker'].upper() }}</h2>
         <table>
@@ -27,14 +36,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for date, row in data.iterrows() %}
+                {% for row in data.itertuples() %}
                 <tr>
-                    <td>{{ date.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ row['Open'] }}</td>
-                    <td>{{ row['High'] }}</td>
-                    <td>{{ row['Low'] }}</td>
-                    <td>{{ row['Close'] }}</td>
-                    <td>{{ row['Volume'] }}</td>
+                    <td>{{ row.Date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ row.Open }}</td>
+                    <td>{{ row.High }}</td>
+                    <td>{{ row.Low }}</td>
+                    <td>{{ row.Close }}</td>
+                    <td>{{ row.Volume }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
