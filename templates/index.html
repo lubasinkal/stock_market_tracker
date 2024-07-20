@@ -25,6 +25,7 @@
         {% if data is not none %}
         <h2>Historical Data for {{ request.form['ticker'].upper() }}</h2>
         <a href="{{ url_for('download') }}" class="download-button">Download CSV</a>
+        <a href="{{ url_for('visualize')}}">Visualize</a>
         <table>
             <thead>
                 <tr>

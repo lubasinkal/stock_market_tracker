@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request,Response
 import yfinance as yf
 import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+import io
 
 app = Flask(__name__)
 
@@ -21,6 +24,19 @@ def index():
             data = stock_data.reset_index()
 
     return render_template('index.html', data=data)
+
+@app.route('/visualize', methods=['GET'])
+def visualize():
+    global stock_data, ticker_name
+    if stock_data is not None and ticker_name is not None:
+        # Create a Plotly figure
+        fig = px.line(stock_data, x=stock_data.index, y='Close', title=f'{ticker_name} Stock Price')
+        
+        # Convert the Plotly figure to HTML
+        graph_html = pio.to_html(fig, full_html=False)
+        
+        return render_template('visualize.html', graph_html=graph_html)
+    return "No data available to visualize.", 404
 
 @app.route('/download', methods=['GET'])
 def download():
