@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Stock Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Tracker</h1>
+        <form method="POST">
+            <input type="text" name="ticker" placeholder="Enter stock ticker" required>
+            <button type="submit">Get Data</button>
+        </form>
+        {% if data is not none %}
+        <h2>Historical Data for {{ request.form['ticker'].upper() }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for date, row in data.iterrows() %}
+                <tr>
+                    <td>{{ date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ row['Open'] }}</td>
+                    <td>{{ row['High'] }}</td>
+                    <td>{{ row['Low'] }}</td>
+                    <td>{{ row['Close'] }}</td>
+                    <td>{{ row['Volume'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
